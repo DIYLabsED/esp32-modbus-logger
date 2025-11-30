@@ -6,4 +6,8 @@
 #include "endpoint.hpp"
 #include "credentials.hpp"
 
-void handleAuthentication
+void initAuthentication(){
+
+  initCredentials();
+
+}
