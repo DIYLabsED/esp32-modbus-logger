@@ -31,8 +31,8 @@ void setup(){
   Serial.print("Connected. IP address: ");
   Serial.println(WiFi.localIP());
 
-  asyncServer.on("/api/admin/reboot", HTTP_GET, apiRebootESP).setAuthentication(API_USERNAME, API_PASSWORD);
-  asyncServer.on("/api/admin/blink", HTTP_GET, apiBlinkLED).setAuthentication(API_USERNAME, API_PASSWORD);
+  asyncServer.on("/api/admin/reboot", HTTP_GET, apiRebootESP).setAuthentication(API_ADMIN_USERNAME, API_ADMIN_PASSWORD);
+  asyncServer.on("/api/general/blink", HTTP_GET, apiBlinkLED).setAuthentication(API_GENERAL_USERNAME, API_GENERAL_PASSWORD);
   asyncServer.begin();
 
 }
