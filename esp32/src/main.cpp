@@ -4,7 +4,11 @@
 
 #include <credentials.hpp>
 
+
 AsyncWebServer asyncServer(80);
+
+
+void apiRebootESP(AsyncWebServerRequest* request);
 
 
 void setup(){
@@ -24,8 +28,17 @@ void setup(){
   Serial.print("Connected. IP address: ");
   Serial.println(WiFi.localIP());
 
+  asyncServer.on("/api/admin/reboot", HTTP_GET, apiRebootESP).setAuthentication(API_USERNAME, API_PASSWORD);
+  asyncServer.begin();
+
 }
 
 void loop(){
+
+}
+
+void apiRebootESP(AsyncWebServerRequest* request){
+
+  ESP.restart();
 
 }
