@@ -1,26 +1,26 @@
 #pragma once
 
-#include <Arduino.h>
 #include <ESPAsyncWebServer.h>
 
 enum APIPermissionLevel{
 
-  API_PERMISSION_ADMIN,
-  API_PERMISSION_GENERAL
+  API_PERMISSION_UNKNOWN,
+  API_PERMISSION_GENERAL,
+  API_PERMISSION_ADMIN
 
 };
 
 struct APIUser{
 
-  String username;
-  String password;
+  const char* username;
+  const char* password;
   APIPermissionLevel level;
 
 };
 
 struct APIEndpoint{
 
-  String url;
+  const char* url;
   ArRequestHandlerFunction handler;
   APIPermissionLevel level;
 

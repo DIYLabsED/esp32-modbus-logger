@@ -2,14 +2,17 @@
 #include <ESPAsyncWebServer.h>
 #include <WiFi.h>
 
-#include "credentials.hpp"
-
+#include <api/authentication.hpp>
+#include <api/endpoint.hpp>
 
 AsyncWebServer asyncServer(80);
 
 
 void apiRebootESP(AsyncWebServerRequest* request);
 void apiBlinkLED(AsyncWebServerRequest* request);
+
+APIEndpoint rebootEndpoint = {"/api/reboot", apiRebootESP, API_PERMISSION_ADMIN};
+APIEndpoint blinkEndpoint = {"/api/blink", apiBlinkLED, API_PERMISSION_GENERAL};
 
 
 void setup(){
@@ -31,8 +34,11 @@ void setup(){
   Serial.print("Connected. IP address: ");
   Serial.println(WiFi.localIP());
 
-  asyncServer.on("/api/admin/reboot", HTTP_GET, apiRebootESP).setAuthentication(API_ADMIN_USERNAME, API_ADMIN_PASSWORD);
-  asyncServer.on("/api/general/blink", HTTP_GET, apiBlinkLED).setAuthentication(API_GENERAL_USERNAME, API_GENERAL_PASSWORD);
+  initAuthentication();
+
+  registerAPIEndpoint(&asyncServer, rebootEndpoint);
+  registerAPIEndpoint(&asyncServer, blinkEndpoint);
+
   asyncServer.begin();
 
 }
