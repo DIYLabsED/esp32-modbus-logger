@@ -3,7 +3,8 @@
 #include <ESPAsyncWebServer.h>
 #include <vector>
 
-typedef uint8_t AuthAPIPermissionLevel;
+typedef int8_t AuthAPIPermissionLevel;
+const AuthAPIPermissionLevel AUTHAPI_PERMISSION_ERROR = -1;
 
 struct AuthAPIUser{
 

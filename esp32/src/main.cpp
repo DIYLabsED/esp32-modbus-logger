@@ -1,18 +1,19 @@
 #include <Arduino.h>
 #include <ESPAsyncWebServer.h>
+#include <AuthAPI.hpp>
 #include <WiFi.h>
+#include <credentials.hpp>
 
-#include <api/authentication.hpp>
-#include <api/endpoint.hpp>
 
 AsyncWebServer asyncServer(80);
+AuthAPI authAPI(&asyncServer);
 
 
 void apiRebootESP(AsyncWebServerRequest* request);
 void apiBlinkLED(AsyncWebServerRequest* request);
 
-APIEndpoint rebootEndpoint = {"/api/reboot", apiRebootESP, API_PERMISSION_ADMIN};
-APIEndpoint blinkEndpoint = {"/api/blink", apiBlinkLED, API_PERMISSION_GENERAL};
+AuthAPIEndpoint rebootEndpoint = {"/api/reboot", apiRebootESP, 1};
+AuthAPIEndpoint blinkEndpoint = {"/api/blink", apiBlinkLED, 0};
 
 
 void setup(){
@@ -34,10 +35,10 @@ void setup(){
   Serial.print("Connected. IP address: ");
   Serial.println(WiFi.localIP());
 
-  initAuthentication();
-
-  registerAPIEndpoint(&asyncServer, rebootEndpoint);
-  registerAPIEndpoint(&asyncServer, blinkEndpoint);
+  authAPI.registerEndpoint(rebootEndpoint);
+  authAPI.registerEndpoint(blinkEndpoint);
+  authAPI.registerUser(generalAPIUser);
+  authAPI.registerUser(adminAPIUser);
 
   asyncServer.begin();
 

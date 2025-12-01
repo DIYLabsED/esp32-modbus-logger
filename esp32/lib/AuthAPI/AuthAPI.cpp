@@ -16,7 +16,7 @@ AuthAPIPermissionLevel AuthAPI::_getClientLevel(AsyncWebServerRequest *request){
 
   }
 
-  return -1;
+  return AUTHAPI_PERMISSION_ERROR;
 
 }
 
@@ -41,7 +41,7 @@ void AuthAPI::registerEndpoint(AuthAPIEndpoint endpoint){
       }
       else{
 
-        if(clientLevel == -1){
+        if(clientLevel == AUTHAPI_PERMISSION_ERROR){
 
           request->requestAuthentication();
           return;
